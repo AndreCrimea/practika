@@ -8,7 +8,7 @@ class Human:
         print('Очень интересный вопрос! Не знаю.')
 
 
-class Student(Human):
+class Student(Human):  
     def __init__(self, name):
         super().__init__(name)
     
@@ -19,9 +19,9 @@ class Student(Human):
     #  имя объекта и текст вопроса задаются при вызове метода ask_question
     def ask_question(self, someone, question):
         # напечатайте на экран вопрос в нужном формате
-        print(f'{self.name}, {self.question}')
+        print(f'{someone.name}, {question}')
         # запросите ответ на вопрос у someone
-
+        someone.answer_question(question)
         print()  # этот print выводит разделительную пустую строку	
 
 
@@ -30,9 +30,38 @@ class Curator(Human):
         # здесь нужно проверить, пришёл куратору знакомый вопрос или нет
         # если да - ответить на него
         # если нет - вызвать метод answer_question() у родительского класса
-        ...
+        quest = 'мне грустненько, что делать?'
+        if question == quest:
+            print('Держись, всё получится. Хочешь видео с котиками?')
+        else:
+            return super().answer_question(question)
 
 # объявите и реализуйте классы CodeReviewer и Mentor
+class Mentor(Human):
+    def answer_question(self, question):
+        # здесь нужно проверить, пришёл куратору знакомый вопрос или нет
+        # если да - ответить на него
+        # если нет - вызвать метод answer_question() у родительского класса
+        quest = 'мне грустненько, что делать?'
+        quest2 = 'как устроиться работать питонистом?'
+        if question == quest:
+            print('Отдохни и возвращайся с вопросами по теории.')
+        elif question == quest2:
+            print('Сейчас расскажу.')
+        else:
+            return super().answer_question(question)
+
+
+class CodeReviewer(Human):
+    def answer_question(self, question):
+        # здесь нужно проверить, пришёл куратору знакомый вопрос или нет
+        # если да - ответить на него
+        # если нет - вызвать метод answer_question() у родительского класса
+        quest = 'что не так с моим проектом?'
+        if question == quest:
+            print('О, вопрос про проект, это я люблю.')
+        else:
+            return super().answer_question(question)
 
 
 # следующий код менять не нужно, он работает, мы проверяли
