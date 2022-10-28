@@ -1,27 +1,26 @@
-from typing import Any
-from typing import Dict, Type
+from typing import Dict, List, Type, ClassVar
+from dataclasses import dataclass, asdict
 
 
+@dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    def __init__(self,
-                 training_type: str,  # Тип тренеровки
-                 duration: float,     # Длительность тренеровки в часах
-                 distance: float,     # Дистанция в км
-                 speed: float,        # Средняя скорость
-                 calories: float) -> None:     # Потраченные калории
-        self.training_type = training_type
-        self.duration = duration
-        self.distance = distance
-        self.speed = speed
-        self.calories = calories
+    training_type: str  # Тип тренеровки
+    duration: float     # Длительность тренеровки в часах
+    distance: float     # Дистанция в км
+    speed: float        # Средняя скорость
+    calories: float     # Потраченные калории
+
+    OUT_MESSAGE: ClassVar[str] = (
+        'Тип тренировки: {training_type};'
+        ' Длительность: {duration:.3f} ч.;'
+        ' Дистанция: {distance:.3f} км;'
+        ' Ср. скорость: {speed:.3f} км/ч;'
+        ' Потрачено ккал: {calories:.3f}.')
 
     def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type};'
-                f' Длительность: {self.duration:.3f} ч.;'
-                f' Дистанция: {self.distance:.3f} км;'
-                f' Ср. скорость: {self.speed:.3f} км/ч;'
-                f' Потрачено ккал: {self.calories:.3f}.')
+        """Вывод сообщения о тренировке."""
+        return self.OUT_MESSAGE.format(*asdict(self))
 
 
 class Training:
@@ -136,14 +135,14 @@ class Swimming(Training):
         return spent_calories
 
 
-def read_package(workout_type: str, data: list[int]) -> Training:
+def read_package(workout_type: str, data: List) -> Training:
     """Прочитать данные полученные от датчиков."""
-    trainings: dict[str, type[Training]] = {'RUN': Running,
+    trainings: Dict[str, Type[Training]] = {'RUN': Running,
                                             'SWM': Swimming,
-                                        'WLK': SportsWalking}
+                                            'WLK': SportsWalking}
     if workout_type not in trainings:
-        return trainings[workout_type](*data)
-    return f'непредвиденные данные'
+        raise ValueError('Ошибка,непредвиденные данные')
+    return trainings[workout_type](*data)
 
 
 def main(training: Training) -> None:
