@@ -1,0 +1,34 @@
+def cache3(func):
+    cache = {} # добавил, но задачу не решил)
+    counter = 0
+    result = func()
+    def wrapper():
+        nonlocal counter
+        counter += 1
+        if counter<=3:
+            return result
+        else:
+            counter = 1
+            return func()
+    return wrapper
+
+
+
+@cache3
+def heavy():
+    print('Сложные вычисления')
+    return 1
+
+
+print(heavy())
+# Сложные вычисления
+# 1
+print(heavy())
+# 1
+print(heavy())
+# 1
+
+# Опять кеш устарел, надо вычислять заново
+print(heavy())
+# Сложные вычисления
+# 1
