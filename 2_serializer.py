@@ -30,10 +30,11 @@ from django.http import HttpResponse
 from rest_framework import serializers
 from .models import Post
 from .serializers import PostSerializer
- 
-def get_posts(request, pk):
+from django.shortcuts import get_object_or_404
+
+
+def get_post(request, pk):
     if request.method == 'GET':
-        post_id = pk 
-        post = Post.objects.get(pk=post_id)
+        post = get_object_or_404(Post, id=pk)
         serializer = PostSerializer(post)
         return JsonResponse(serializer.data)
